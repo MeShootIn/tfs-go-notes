@@ -81,7 +81,7 @@ func structs() {
 	_ = make(map[string]struct{})
 
 	// КОНСТРУКТОР
-	_ = new(Person)        // Возвращает указатель на тип
+	_ = new(Person)        // Выделяет память и возвращает указатель
 	_, _ = New("Dima", 22) // Инкапсулирует логику
 
 	// ВСТРАИВАНИЕ
@@ -94,6 +94,7 @@ func structs() {
 		},
 	}
 	// При обращении к не перекрывающимся полям происходит доступ по короткому имени
+	// При ДОБАВЛЕНИИ поля Name внутрь структуры Employee может измениться логика
 	fmt.Println(freelancer.Name, freelancer.Age) // <=> freelancer.Person.Name, freelancer.Person.Age
 	freelancer.SayHello()
 
@@ -128,21 +129,21 @@ type Speaker interface {
 }
 
 func (p Person) SpeakConfirm() {
-	fmt.Println(p.Name, ": I can speak!")
+	fmt.Print(p.Name, ": I can speak!\n")
 }
 
 func (p Person) Speak(text string) (string, error) {
-	fmt.Println(p.Name, ": ", text)
+	fmt.Print(p.Name, ": ", text, "\n")
 
 	return text, nil
 }
 
 func interfaces() {
-	// ПОЛИМОРФИЗМ
+	// TODO ПОЛИМОРФИЗМ (должны быть интефрейсы)
 	persons := [...]Person{
 		{
-			Name: "Dima",
-			Age:  22,
+			Name: "Andrey",
+			Age:  25,
 		},
 		{
 			Name: "Matvey",
@@ -156,8 +157,7 @@ func interfaces() {
 	}
 	Enter()
 
-	// Представление интерфейса в памяти, ошибка
-	// ...
+	// TODO Представление интерфейса в памяти, ошибка
 
 	// ПУСТОЙ ИНТЕРФЕЙС
 	var anything interface{}
@@ -192,9 +192,10 @@ func interfaces() {
 ОБРАБОТКА ОШИБОК
 
 * Если функция возвращает (object, error) => в случае успеха (object, nil), ошибки - (nil, error)
-* Ошибка обрабатывать явно, а не в каких-либо отдельных функциях
+* Ошибки обрабатывать явно, а не в каких-либо отдельных функциях
 * Указывать через fmt.Errorf() контекст ошибки, но проверять ошибку ТОЛЬКО с помощью errors.Is и errors.As
-* Проверять ошибку через экземпляр и указатель, т.к. иногда возвращают указатель (если допустимо изменение состояния)
+* Проверять ошибку через указатель и, иногда, экземпляр, т.к. иногда возвращают указатель (если допустимо изменение
+состояния) => смотреть определение структуры ошибки
 */
 
 type HttpError struct {
@@ -294,6 +295,7 @@ func fileWrite() {
 
 * Сериализация - структура данных -> битовая последовательность
 * Десериализация - обратно
+TODO Encoder
 */
 func serialization() {
 	data, _ := json.Marshal(Employee{
@@ -319,9 +321,9 @@ func serialization() {
 
 func main() {
 	//structs()
-	//interfaces()
+	interfaces()
 	//errorHandling()
 	//config()
 	//fileWrite()
-	serialization()
+	//serialization()
 }

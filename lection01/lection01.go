@@ -356,7 +356,8 @@ func branching() {
 	a, b := 2, 2
 
 	switch {
-	case a+b == 5, a+b == 6: // <=> ||
+	// TODO <=> || ???
+	case a+b == 5, a+b == 6:
 		fmt.Println("skip")
 	case a+b == 4 && a*b == 4:
 		fmt.Println("!!!")
@@ -377,7 +378,7 @@ func branching() {
 func loops() {
 	str := "1\n2"
 	fmt.Println(len(str))
-	// range string, range map
+	// range string/map
 	for key, val := range str {
 		fmt.Print(key, ":", string(val), " ")
 	}
@@ -385,7 +386,7 @@ func loops() {
 	Enter()
 
 	// Сначала происходит копирование и затем итерация по копии
-	// Чтобы избежать утечки памяти/зацикливания
+	// В данном примере помогает избежать утечки памяти и зацикливания
 	arr := []int{1}
 	for _, val := range arr {
 		arr = append(arr, val)
