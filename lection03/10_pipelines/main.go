@@ -1,36 +1,60 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 type ChanIntRead <-chan int
 
-// TODO Добавить WG
+var wg = sync.WaitGroup{}
+
 func gen(nums ...int) ChanIntRead {
 	out := make(chan int)
+	wg.Add(1)
+
 	go func() {
+		defer wg.Done()
+
 		for _, n := range nums {
 			out <- n
 		}
+
 		close(out)
 	}()
+
 	return out
 }
 
 func sq(in ChanIntRead) ChanIntRead {
 	out := make(chan int)
+	wg.Add(1)
+
 	go func() {
+		defer wg.Done()
+
 		for n := range in {
 			out <- n * n
 		}
+
 		close(out)
 	}()
+
 	return out
 }
 
 func main() {
-	c := gen(2, 3)
+	//ch := func(wg *sync.WaitGroup) ChanIntRead {
+	//
+	//}
+
+	c := gen(1, 2, 3)
 	out := sq(c)
 
-	fmt.Println(<-out) // 4
-	fmt.Println(<-out) // 9
+	fmt.Println(<-out)
+	fmt.Println(<-out)
+	fmt.Println(<-out)
+	fmt.Println(<-out)
+
+	wg.Wait()
 }
