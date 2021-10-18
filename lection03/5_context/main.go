@@ -38,7 +38,7 @@ func main() {
 	}(ctx)
 
 	time.Sleep(time.Second * 3)
-	cancel() // Отмена контекста, вызывающая Done()
+	cancel() // Отмена контекста (ctx.Done() разблочится)
 
 	wg.Wait()
 }

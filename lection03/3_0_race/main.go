@@ -23,7 +23,7 @@ func main() {
 	go incCounter(wg) // routine #2
 	wg.Wait()
 
-	fmt.Println("Final counter: ", counter) // 2, т.к. происходит
+	fmt.Println("Final counter: ", counter) // 2
 }
 
 func incCounter(wg *sync.WaitGroup) {

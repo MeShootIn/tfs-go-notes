@@ -18,13 +18,9 @@ import (
 	* Неявная - при инициализации переменной можно не указывать тип (он будет определён автоматически неявно):
 	a := 123
 
-	* Анонимный объект - CE
-	!!!
-	В следующих лекциях это опровергнется
-	!!!
+	* Анонимный объект - мб CE
 	* Типизированный ЯП - все переменные имеют тип
 	* Инициализация по умолчанию - всегда zero values
-	* Все типы удобно читаются слева направо
 
 	Типы:
 	1) скалярные:
@@ -35,7 +31,7 @@ import (
 	2) аргегатные (композитные):
 	* func
 	* массивы, слайсы
-	* остальные: словари, структуры, интерфейсы, каналы
+	* остальные: map, структуры, интерфейсы, каналы
 	3) указатели
 */
 func vars() {
@@ -74,7 +70,7 @@ func vars() {
 		Tuesday                            // DayOfTheWeek(2)
 		Wednesday                          // DayOfTheWeek(3)
 		// ...
-		// _ - iota всё равно заинкрементится
+		_ // iota всё равно заинкрементится
 		// ...
 	)
 	fmt.Println(Monday, Tuesday, Wednesday)
@@ -144,7 +140,7 @@ func arraysAndSlices() {
 	fmt.Println(firstInits)
 	Enter()
 
-	// при := происходит копирование массива
+	// При := происходит КОПИРОВАНИЕ массива
 	var arr [2][2]int
 	arr[0][1] = 123 // не := !!!
 
@@ -167,11 +163,12 @@ func arraysAndSlices() {
 	// на один участок памяти !!!
 
 	anotherSlice := slice
-	anotherSlice = append(anotherSlice, []int{3, 2, 2}...) // slice не поменяется, а sliceCopy будет указывать на новое
+	anotherSlice = append(anotherSlice, []int{3, 2, 2}...) // slice не поменяется, а anotherSlice будет указывать на новое
 	// место в памяти, т.к. создаётся новый SliceHeader {Data, Len, Cap} !!!
 	fmt.Println(slice, sliceCopy, anotherSlice)
 	Enter()
 
+	// TODO Оба изменятся
 	mk := make([]int, 5, 10) // выделяем память под 10 (Cap) элементов, но инициализируем zero values только
 	// первые 5 (Len)
 	// mk[8] = 123 - RE
@@ -191,20 +188,14 @@ func arraysAndSlices() {
 	Enter()
 
 	// ПОПУЛЯРНАЯ ОШИБКА
-	err := make([]bool, 100) // Len = Cap = 100
-	err = append(err, true)  // Len = 101, Cap = 200
+	full := make([]bool, 100) // Len = Cap = 100
+	full = append(full, true) // Len = 101, Cap = 200
 
 	// СРЕЗЫ
 	kek := []byte{1, 2, 3, 4, 5}
 	kekSlice := kek[1:3]
-	fmt.Println(len(kekSlice), cap(kekSlice), kekSlice) // т.к. Len = 3 - 1 + 1, Cap = кол-во элементов от начала среза
-	Enter()
-
-	array := [...]int{6, 7, 8}
-	sliceCast := array
-	array[0] = 123
-	fmt.Println(array, sliceCast) // sliceCas[0] тоже изменился, т.к. не было реаллокации и они указывают на один
-	// участок памяти
+	fmt.Println(len(kekSlice), cap(kekSlice), kekSlice) // т.к. Len = (3 - 1) - 1 + 1, Cap = кол-во элементов от начала
+	// среза
 }
 
 /*
@@ -212,7 +203,7 @@ func arraysAndSlices() {
 */
 
 type Time int
-type UnixTime = Time // "=" копирует методы Time в UnixTime
+type UnixTime = Time // "=" копирует методы Time в UnixTime и не требует явного приведения к Time (псевдоним)
 
 // Метод для типа Time
 func (t *Time) Add(dt int) {
@@ -225,7 +216,7 @@ func (t Time) String() string {
 }
 
 func types() {
-	time := Time(0) // <=> var time Time = 0 - срабатывает неявное приведение, т.к. это наследник типа int
+	time := Time(123) // <=> var time Time = 123 - срабатывает НЕЯВНОЕ приведение, т.к. это наследник типа int
 	time.Add(3)
 	fmt.Println(time)
 }
@@ -340,7 +331,7 @@ func branching() {
 		block := 228
 		fmt.Println(block)
 	}
-	// b := block - CE, т.к. находится в другом блоке
+	// b = block - CE, т.к. находится в другом блоке
 
 	arr := [3]int{}
 	GetLen := func() int {
@@ -352,7 +343,7 @@ func branching() {
 	}
 	// l = 123 - CE, недоступна вне if
 
-	// Нет break'ов, но есть fallthrough для перехода И ВЫПОЛНЕНИЮ к следующему case
+	// Нет break'ов, но есть fallthrough для перехода И ВЫПОЛНЕНИЯ к следующему case
 	a, b := 2, 2
 
 	switch {
@@ -428,9 +419,9 @@ func loops() {
 }
 
 func main() {
-	vars()
+	//vars()
 	//strings()
-	//arraysAndSlices()
+	arraysAndSlices()
 	//types()
 	//funcs()
 	//dicts()

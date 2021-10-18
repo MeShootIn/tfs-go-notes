@@ -2,21 +2,37 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
 
 type ChanIntRead <-chan int
 
-var wg = sync.WaitGroup{}
+//var wg = sync.WaitGroup{}
 
-func gen(nums ...int) ChanIntRead {
+func genNums(n int) ChanIntRead {
 	out := make(chan int)
-	wg.Add(1)
+	//wg.Add(1)
 
 	go func() {
-		defer wg.Done()
+		//defer wg.Done()
 
-		for _, n := range nums {
+		for i := 1; i <= n; i++ {
+			out <- i
+		}
+
+		close(out)
+	}()
+
+	return out
+}
+
+func num(nums ChanIntRead) ChanIntRead {
+	out := make(chan int)
+	//wg.Add(1)
+
+	go func() {
+		//defer wg.Done()
+
+		for n := range nums {
 			out <- n
 		}
 
@@ -28,10 +44,10 @@ func gen(nums ...int) ChanIntRead {
 
 func sq(in ChanIntRead) ChanIntRead {
 	out := make(chan int)
-	wg.Add(1)
+	//wg.Add(1)
 
 	go func() {
-		defer wg.Done()
+		//defer wg.Done()
 
 		for n := range in {
 			out <- n * n
@@ -44,17 +60,14 @@ func sq(in ChanIntRead) ChanIntRead {
 }
 
 func main() {
-	//ch := func(wg *sync.WaitGroup) ChanIntRead {
-	//
-	//}
+	g := genNums(7)
+	n := num(g)
+	s := sq(n)
 
-	c := gen(1, 2, 3)
-	out := sq(c)
+	//// FIXME
+	for square := range s {
+		fmt.Println(square)
+	}
 
-	fmt.Println(<-out)
-	fmt.Println(<-out)
-	fmt.Println(<-out)
-	fmt.Println(<-out)
-
-	wg.Wait()
+	//wg.Wait()
 }
