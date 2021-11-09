@@ -7,7 +7,6 @@ import (
 
 func main() {
 	unbuffered := make(chan string)
-
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)

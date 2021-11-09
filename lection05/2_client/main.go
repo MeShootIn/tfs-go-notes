@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+/*
+Нестандартные хэдеры обычно начинаются с X:
+* X-Powered-By
+*/
+
 func main() {
 	v := url.Values{}
 	v.Add("id", "1")
@@ -30,7 +35,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("req")
+	fmt.Println("REQUEST")
 	fmt.Println(string(b))
 	fmt.Println()
 
@@ -49,6 +54,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("resp")
+	fmt.Println("RESPONSE")
 	fmt.Println(string(b))
 }

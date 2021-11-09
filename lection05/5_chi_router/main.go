@@ -12,7 +12,7 @@ func main() {
 	r.Get("/hello/{id}", GetHello)
 	r.Post("/hello/{id}", PostHello)
 
-	log.Fatal(http.ListenAndServe(":5000", r))
+	log.Fatal(http.ListenAndServe("localhost:5000", r))
 }
 
 func PostHello(w http.ResponseWriter, r *http.Request) {

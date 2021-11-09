@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 type ChanIntRead <-chan int
 
-//var wg = sync.WaitGroup{}
+var wg = sync.WaitGroup{}
 
-func genNums(n int) ChanIntRead {
+func genNaturals(n int) ChanIntRead {
 	out := make(chan int)
-	//wg.Add(1)
 
+	wg.Add(1)
 	go func() {
-		//defer wg.Done()
+		defer wg.Done()
 
 		for i := 1; i <= n; i++ {
 			out <- i
@@ -25,14 +26,14 @@ func genNums(n int) ChanIntRead {
 	return out
 }
 
-func num(nums ChanIntRead) ChanIntRead {
+func num(in ChanIntRead) ChanIntRead {
 	out := make(chan int)
-	//wg.Add(1)
 
+	wg.Add(1)
 	go func() {
-		//defer wg.Done()
+		defer wg.Done()
 
-		for n := range nums {
+		for n := range in {
 			out <- n
 		}
 
@@ -44,10 +45,10 @@ func num(nums ChanIntRead) ChanIntRead {
 
 func sq(in ChanIntRead) ChanIntRead {
 	out := make(chan int)
-	//wg.Add(1)
 
+	wg.Add(1)
 	go func() {
-		//defer wg.Done()
+		defer wg.Done()
 
 		for n := range in {
 			out <- n * n
@@ -60,14 +61,13 @@ func sq(in ChanIntRead) ChanIntRead {
 }
 
 func main() {
-	g := genNums(7)
-	n := num(g)
-	s := sq(n)
+	sevenNaturals := genNaturals(7)
+	naturals := num(sevenNaturals)
+	squares := sq(naturals)
 
-	//// FIXME
-	for square := range s {
+	for square := range squares {
 		fmt.Println(square)
 	}
 
-	//wg.Wait()
+	wg.Wait()
 }

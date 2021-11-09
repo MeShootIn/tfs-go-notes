@@ -32,6 +32,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":5000", root))
 }
 
+// curl -v --cookie "auth=Dima" localhost:5000/api/hello
 func GetHello(w http.ResponseWriter, r *http.Request) {
 	id, ok := r.Context().Value(userID).(cookieVal)
 	if !ok {
