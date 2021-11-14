@@ -24,6 +24,9 @@ func NewPool(dsn string, logger logrus.FieldLogger) (*pgxpool.Pool, error) {
 	return pool, nil
 }
 
+/*
+ПАТТЕРН "АДАПТЕР"
+*/
 type loggerAdapter struct {
 	logger logrus.FieldLogger
 }

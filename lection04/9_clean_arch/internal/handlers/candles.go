@@ -10,6 +10,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+/*
+* Не импортируется Service
+* Объекты, над которыми происходит работа - интерфейсы
+ */
+
 type CandlesService interface {
 	Candles(ctx context.Context, filter domain.CandleFilter) ([]domain.Candle, error)
 }

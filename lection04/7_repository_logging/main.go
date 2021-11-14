@@ -8,6 +8,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+/*
+ЛОГГИРОВАНИЕ
+
+* logger.WithField TODO
+* Единственное семейство методов логгера, немедленно завершающее выполнение программы, - logger.Fatal*().
+*/
 func main() {
 	logger := log.New()
 	logger.SetLevel(log.DebugLevel)

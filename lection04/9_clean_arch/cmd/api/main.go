@@ -12,6 +12,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+/*
+ЧИСТАЯ АРХИТЕКТУРА
+
+* Чистая <=> многослойная (3-х, 4-х и т.д.).
+* Все слои бросают ошибки ТОЛЬКО верхним слоям, обрабатывают ошибки у- или вызывают ТОЛЬКО нижние слои.
+* Слои:
+1) Controller/Handler/Delivery (Service, Domain) - взаимодействует с Service'ами и подготавливает ответ для REST, gRPC,
+CLI, Web, ...
+2) Service/Usecase (Repository, Domain) - содержит бизнес-логику.
+3) Repository/DAO (Domain) - взаимодействие с БД, микросервисами.
+4) Domain/Model/Entity (никого не импортит) - фундамент архитектуры.
+
+* Пример:
+/cmd/ - микросервисы cmd, взаимодействует с /internal/
+/internal/ - содержит все слои (handlers, services, repository, domain)
+/pkg/ - вспомогательный пакет, не импортит пакеты, являющиеся частью архитектуры.
+
+*/
 func main() {
 	logger := log.New()
 	logger.SetLevel(log.DebugLevel)
