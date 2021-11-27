@@ -295,9 +295,9 @@ func fileWrite() {
 
 * Сериализация - структура данных -> битовая последовательность
 * Десериализация - обратно
-TODO Encoder
 */
 func serialization() {
+	// TODO Encoder
 	data, _ := json.Marshal(Employee{
 		Company: "McDonalds",
 		salary:  30000,
